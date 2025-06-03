@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import fitz  
 import joblib
 
 modelo = joblib.load("modelo_entrenado.pkl")
@@ -10,9 +10,8 @@ def extraer_texto_pdf(ruta_pdf):
         texto += pagina.get_text()
     return texto
 
-ruta_pdf = "areaMA.pdf"  
+ruta_pdf = "areaM.pdf"  
 
-# Extraer texto del PDF
 texto_extraido = extraer_texto_pdf(ruta_pdf)
 
 prediccion = modelo.predict([texto_extraido])
