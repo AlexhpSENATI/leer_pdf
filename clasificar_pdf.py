@@ -1,8 +1,11 @@
-import fitz  
+import fitz  # PyMuPDF
 import joblib
+import numpy as np
 
+# Cargar el modelo previamente entrenado
 modelo = joblib.load("modelo_entrenado.pkl")
 
+# Función para extraer texto de un PDF
 def extraer_texto_pdf(ruta_pdf):
     texto = ""
     doc = fitz.open(ruta_pdf)
@@ -10,13 +13,34 @@ def extraer_texto_pdf(ruta_pdf):
         texto += pagina.get_text()
     return texto
 
-ruta_pdf = "areaM.pdf"  
+# Ruta del PDF a analizar
+ruta_pdf = "areaD.pdf"
 
+# Extraer texto del PDF
 texto_extraido = extraer_texto_pdf(ruta_pdf)
 
-prediccion = modelo.predict([texto_extraido])
+# Predecir área
+probabilidades = modelo.predict_proba([texto_extraido])[0]
+etiquetas = modelo.classes_
 
-# Mostrar resultado
+# Obtener índice con mayor probabilidad
+indice_max = np.argmax(probabilidades)
+confianza = probabilidades[indice_max]
+area_predicha = etiquetas[indice_max]
+
+# Mostrar resultados
 print("Texto extraído del PDF:")
 print(texto_extraido.strip())
-print("\n➡️ Área predicha:", prediccion[0])
+
+# Mostrar predicción con umbral
+print("\n➡️ Predicción:")
+if confianza < 0.6:
+    print("❌ Área no encontrada (confianza insuficiente)")
+else:
+    print(f"✅ Área predicha: {area_predicha} ({confianza*100:.2f}%)")
+
+# if confianza >= 0.5:
+#     porcentaje = round(confianza * 100, 2)
+#     print(f"Área predicha: {area_predicha} ({porcentaje}%)")
+# else:
+#     print("❌ Área no encontrada (confianza insuficiente)")

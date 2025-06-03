@@ -1,60 +1,28 @@
-texto,area
-Limpieza diaria de oficinas y espacios comunes.,LIMPIEZA
-Desinfección de baños y zonas de alto tránsito.,LIMPIEZA
-Recolección de residuos y manejo adecuado de desechos.,LIMPIEZA
-Uso de productos químicos de limpieza certificados.,LIMPIEZA
-Limpieza profunda de pisos techos y ventanas.,LIMPIEZA
-Mantenimiento de equipos de limpieza como aspiradoras y mopas.,LIMPIEZA
-Supervisión del personal de limpieza en turnos rotativos.,LIMPIEZA
-Suministro de materiales de limpieza como detergentes y cloro.,LIMPIEZA
-Capacitación del personal en normas de bioseguridad.,LIMPIEZA
-Control de plagas y fumigación periódica de instalaciones.,LIMPIEZA
-Aplicación de protocolos de limpieza en oficinas gubernamentales.,LIMPIEZA
-Limpieza posterior a eventos y actividades.,LIMPIEZA
-Sanitización de ambientes con nebulizadores.,LIMPIEZA
-Planificación de rutinas semanales de limpieza.,LIMPIEZA
-Lavado de alfombras y tapices con maquinaria especial.,LIMPIEZA
-Eliminación de manchas difíciles en baños.,LIMPIEZA
-Control del stock de productos de limpieza.,LIMPIEZA
-Reportes de actividades realizadas por el equipo de limpieza.,LIMPIEZA
-Implementación de normas ISO para limpieza institucional.,LIMPIEZA
-Supervisión de zonas críticas como cocinas y almacenes.,LIMPIEZA
-Creación de campañas publicitarias en redes sociales.,MARKETING
-Diseño de material gráfico para promocionar productos Marketing.,MARKETING
-Análisis de mercado y competencia directa.,MARKETING
-Gestión de contenido para blogs y sitios web .,MARKETING
-Planificación de lanzamientos de productos.,MARKETING
-Fortalecer la presencia en redes sociales priorizando plataformas como LinkedIn Instagram y YouTube.,MARKETING
-Manejo de campañas pagadas en Facebook e Instagram.,MARKETING
-Elaboración de estrategias de posicionamiento de marca.,MARKETING
-Segmentación de público objetivo en campañas.,MARKETING
-Organización de eventos promocionales.,MARKETING
-Coordinación con agencias de publicidad externas.,MARKETING
-Análisis de métricas de campañas digitales.,MARKETING
-Creación de presentaciones para clientes potenciales.,MARKETING
-Desarrollo de storytelling para campañas.,MARKETING
-Estudio de tendencias de consumo actuales.,MARKETING
-Implementación de estrategias SEO en la web.,MARKETING
-Gestión de reputación online y comentarios.,MARKETING
-Automatización de envíos por correo electrónico.,MARKETING
-Diseño de promociones y descuentos mensuales.,MARKETING
-Monitoreo de redes y publicaciones virales.,MARKETING
-Registro de ingresos y egresos de la empresa.,FINANZAS
-Elaboración de reportes financieros mensuales.,FINANZAS
-Conciliación bancaria de cuentas corrientes.,FINANZAS
-Gestión del presupuesto anual de la compañía.,FINANZAS
-Supervisión de facturación y cobranzas.,FINANZAS
-Análisis de estados de resultados.,FINANZAS
-Pago de impuestos y tributos mensuales.,FINANZAS
-Control del flujo de caja.,FINANZAS
-Evaluación de costos operativos.,FINANZAS
-Proyecciones de crecimiento económico.,FINANZAS
-Revisión de contratos con proveedores.,FINANZAS
-Auditoría interna de procesos contables.,FINANZAS
-Emisión de recibos y comprobantes.,FINANZAS
-Planificación de inversiones de capital.,FINANZAS
-Validación de gastos por departamento.,FINANZAS
-Elaboración de balances generales trimestrales.,FINANZAS
-Gestión de cuentas por pagar y cobrar.,FINANZAS
-Análisis financiero para toma de decisiones.,FINANZAS
-Seguimiento de indicadores financieros clave.,FINANZAS
+"texto","area"
+"Protocolo diario: Desinfección de pomos, interruptores y pasamanos con solución clorada al 0.1% cada 4 horas.","LIMPIEZA"
+"Limpieza profunda de alfombras con extractores de vapor cada 15 días, enfocándose en áreas de recepción.","LIMPIEZA"
+"Plan de descacharrización: Eliminación de agua estancada en patios cada semana para prevenir dengue.","LIMPIEZA"
+"Sanitización de equipos de oficina (teclados, teléfonos) con alcohol isopropílico 70% al finalizar turnos.","LIMPIEZA"
+"Uso de máquina autoescrubadora para pisos de concreto en almacenes, con detergente pH neutro.","LIMPIEZA"
+"Control de olores en baños: Aplicación de desodorante enzimático tras cada limpieza programada.","LIMPIEZA"
+"Lavado de cortinas blackout trimestral con método de inmersión en solución bactericida.","LIMPIEZA"
+"Gestión de residuos peligrosos: Guantes y mascarillas usadas se depositarán en contenedores rojos con tapa.","LIMPIEZA"
+"Inspección mensual de ductos de aire acondicionado para remoción de polvo con cepillos HEPA.","LIMPIEZA"
+"Capacitación en manejo de derrames: Protocolo para absorción de químicos con kits de emergencia.","LIMPIEZA"
+"Rotación de traperos microfibra: Azul para vidrios, verde para pisos y rojo para sanitarios.","LIMPIEZA"
+"Limpieza post-obra: Retiro de partículas de yeso con aspiradora industrial y barredora húmeda.","LIMPIEZA"
+"Desinfección de zonas de comedor: Mesones y microondas se limpiarán con vapor a 120°C post-turnos.","LIMPIEZA"
+"Programa de limpieza de ventanas exteriores con pértigas telescópicas y agua desmineralizada.","LIMPIEZA"
+"Control de plagas: Colocación estratégica de trampas para cucarachas en puntos críticos semanalmente.","LIMPIEZA"
+"Limpieza de equipos electrónicos: Prohibido uso de líquidos en pantallas táctiles, solo paños antiestáticos.","LIMPIEZA"
+"Protocolo COVID-19: Nebulización con amonio cuaternario en áreas comunes cada 48 horas.","LIMPIEZA"
+"Mantenimiento de fregaderos: Desobstrucción semanal de sifones y aplicación de desincrustante.","LIMPIEZA"
+"Limpieza de cisternas: Vaciamiento y cepillado con hipoclorito al 5% cada 6 meses (norma OS-050).","LIMPIEZA"
+"Gestión de residuos orgánicos: Compostaje de restos de café y cáscaras en contenedores designados.","LIMPIEZA"
+"Limpieza de mamparas de vidrio con solución vinagre-agua (proporción 1:3) para evitar rayaduras.","LIMPIEZA"
+"Sanitización de vehículos corporativos: Aspirado y desinfección de volantes y cambios post-uso.","LIMPIEZA"
+"Remoción de grafitis: Uso de removedor ecológico a base de cítricos en superficies pintadas.","LIMPIEZA"
+"Limpieza de equipos de gimnasio: Aplicación de desinfectante tras cada uso en mancuernas y bancas.","LIMPIEZA"
+"Protocolo para derrames de sangre: Uso de kit OSHA con guantes N95 y solución hipoclorada al 10%.","LIMPIEZA"
+
+
