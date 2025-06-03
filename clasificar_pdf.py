@@ -10,7 +10,7 @@ def extraer_texto_pdf(ruta_pdf):
         texto += pagina.get_text()
     return texto
 
-ruta_pdf = "areah.pdf"  
+ruta_pdf = "areaMA.pdf"  
 
 # Extraer texto del PDF
 texto_extraido = extraer_texto_pdf(ruta_pdf)
