@@ -12,7 +12,7 @@ spanish_stopwords = stopwords.words('spanish')
 
 # 📥 Cargar dataset
 try:
-    df = pd.read_csv("dataset.csv")
+    df = pd.read_csv("data/dataset.csv")
 except FileNotFoundError:
     print("❌ Error: El archivo 'dataset.csv' no fue encontrado.")
     exit()
