@@ -6,10 +6,8 @@ import joblib
 import nltk
 from nltk.corpus import stopwords
 
-# Descargar stopwords solo si no están descargadas
 nltk.download('stopwords', quiet=True)
 
-# Usar stopwords en español
 spanish_stopwords = stopwords.words('spanish')
 
 # 📥 Cargar dataset
