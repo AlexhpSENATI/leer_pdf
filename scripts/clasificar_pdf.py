@@ -2,7 +2,7 @@ import fitz  # PyMuPDF
 import joblib
 import numpy as np
 
-modelo = joblib.load("modelo_entrenado.pkl")
+modelo = joblib.load("models/modelo_entrenado.pkl")
 
 def extraer_texto_pdf(ruta_pdf):
     texto = ""
@@ -11,7 +11,7 @@ def extraer_texto_pdf(ruta_pdf):
         texto += pagina.get_text()
     return texto
 
-ruta_pdf = "soliF.pdf"
+ruta_pdf = "data/areaMAA.pdf"
 
 texto_extraido = extraer_texto_pdf(ruta_pdf)
 
