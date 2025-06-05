@@ -56,22 +56,22 @@ if (predictionData) {
 }
 
 
-
-
-
 // ========== VARIABLES GLOBALES ========== //
 const loginModal = document.getElementById('loginModal');
 const mainContent = document.getElementById('mainContent');
-const loginForm = document.querySelector('#loginForm');
-const registerForm = document.querySelector('#registerForm');
-const loginLink = document.querySelector('a[onclick="showLoginForm()"]');
-const registerLink = document.querySelector('a[onclick="showRegisterForm()"]');
+const loginForm = document.getElementById('loginForm');
+const registerForm = document.getElementById('registerForm');
+const loginFormContainer = document.getElementById('loginFormContainer');
+const registerFormContainer = document.getElementById('registerFormContainer');
+const showRegisterLink = document.getElementById('showRegisterLink');
+const showLoginLink = document.getElementById('showLoginLink');
 const logoutBtn = document.querySelector('.login-icon');
 const closeBtns = document.querySelectorAll('.close-btn');
 
 // ========== INICIALIZACIÓN ========== //
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
+    setupAuthForms();
     setupEventListeners();
 });
 
@@ -90,16 +90,15 @@ function checkAuth() {
 function showAuthModal() {
     loginModal.style.display = 'flex';
     disableMainContent();
-    showLoginForm(); // Mostrar formulario de login por defecto
+    showLoginForm();
 }
 
-// ========== MANEJO DE CONTENIDO ========== //
 function enableMainContent(username) {
     loginModal.style.display = 'none';
     mainContent.classList.remove('content-disabled');
     mainContent.classList.add('content-enabled');
     
-    // Actualizar UI para usuario logueado
+    // Actualizar UI
     const loginIcon = document.querySelector('.login-icon i');
     loginIcon.className = 'fas fa-sign-out-alt';
     loginIcon.parentElement.setAttribute('title', 'Cerrar sesión');
@@ -110,29 +109,62 @@ function disableMainContent() {
     mainContent.classList.add('content-disabled');
     mainContent.classList.remove('content-enabled');
     
-    // Actualizar UI para usuario no logueado
+    // Actualizar UI
     const loginIcon = document.querySelector('.login-icon i');
     loginIcon.className = 'fas fa-user-circle';
     loginIcon.parentElement.setAttribute('title', 'Iniciar sesión');
     logoutBtn.onclick = showAuthModal;
 }
 
+// ========== MANEJO DE FORMULARIOS ========== //
+function setupAuthForms() {
+    // Mostrar formulario de registro
+    showRegisterLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showRegisterForm();
+    });
+
+    // Mostrar formulario de login
+    showLoginLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        showLoginForm();
+    });
+}
+
+function showLoginForm() {
+    registerFormContainer.style.display = 'none';
+    loginFormContainer.style.display = 'block';
+    document.getElementById('username').focus();
+}
+
+function showRegisterForm() {
+    loginFormContainer.style.display = 'none';
+    registerFormContainer.style.display = 'block';
+    document.getElementById('newUsername').focus();
+}
+
+function handleCloseModal() {
+    if (!localStorage.getItem('loggedInUser')) {
+        alert('Debes iniciar sesión para acceder a la aplicación');
+        return false;
+    }
+}
+
 // ========== MANEJO DE SESIÓN ========== //
 function loginUser(username, password) {
     return new Promise((resolve, reject) => {
-        // Simular petición al backend (reemplazar con fetch en producción)
+        // Simular petición al backend
         setTimeout(() => {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             const user = users.find(u => u.username === username && u.password === password);
             
             if (user) {
-                // Simular token de autenticación
                 const authToken = Math.random().toString(36).substring(2);
                 localStorage.setItem('authToken', authToken);
                 localStorage.setItem('loggedInUser', username);
                 resolve(user);
             } else {
-                reject(new Error('Credenciales incorrectas'));
+                reject(new Error('Usuario o contraseña incorrectos'));
             }
         }, 800);
     });
@@ -144,7 +176,7 @@ function registerUser(username, password) {
             const users = JSON.parse(localStorage.getItem('users') || '[]');
             
             if (users.some(u => u.username === username)) {
-                reject(new Error('El usuario ya existe'));
+                reject(new Error('El nombre de usuario ya existe'));
             } else if (password.length < 6) {
                 reject(new Error('La contraseña debe tener al menos 6 caracteres'));
             } else {
@@ -161,21 +193,11 @@ function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('loggedInUser');
     showAuthModal();
+    loginForm.reset();
+    registerForm.reset();
 }
 
-// ========== MANEJO DE FORMULARIOS ========== //
-function showLoginForm() {
-    document.getElementById('registerForm').style.display = 'none';
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('username').focus();
-}
-
-function showRegisterForm() {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'block';
-    document.getElementById('newUsername').focus();
-}
-
+// ========== MANEJADORES DE FORMULARIOS ========== //
 function handleLoginSubmit(e) {
     e.preventDefault();
     const username = document.getElementById('username').value.trim();
@@ -237,39 +259,22 @@ function setupEventListeners() {
     loginForm.addEventListener('submit', handleLoginSubmit);
     registerForm.addEventListener('submit', handleRegisterSubmit);
     
-    // Enlaces de cambio
-    loginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        showLoginForm();
-    });
-    
-    registerLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        showRegisterForm();
-    });
-    
     // Botones de cerrar
     closeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (!localStorage.getItem('loggedInUser')) {
-                alert('Debe iniciar sesión para usar la aplicación');
-            }
-        });
+        btn.addEventListener('click', handleCloseModal);
     });
     
     // Clic fuera del modal
     loginModal.addEventListener('click', (e) => {
         if (e.target === loginModal) {
-            alert('Debe iniciar sesión para usar la aplicación');
+            handleCloseModal();
         }
     });
     
-    // Manejar tecla Escape
+    // Tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && loginModal.style.display === 'flex') {
-            if (!localStorage.getItem('loggedInUser')) {
-                alert('Debe iniciar sesión para usar la aplicación');
-            }
+            handleCloseModal();
         }
     });
 }
@@ -278,3 +283,4 @@ function setupEventListeners() {
 window.showLoginForm = showLoginForm;
 window.showRegisterForm = showRegisterForm;
 window.logout = logout;
+window.handleCloseModal = handleCloseModal;

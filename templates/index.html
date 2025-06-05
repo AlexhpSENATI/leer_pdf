@@ -12,7 +12,7 @@
 
 <body>
   <!-- Modal de Login -->
-  <div id="loginModal" class="modal" style="display: block;">
+  <!-- <div id="loginModal" class="modal" style="display: block;">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <h2>Iniciar Sesión</h2>
@@ -50,8 +50,53 @@
       </form>
       <p class="toggle-form">¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()">Inicia sesión aquí</a></p>
     </div>
-  </div>
+  </div> -->
 
+
+  <!-- Modal de Login -->
+  <div id="loginModal" class="modal" style="display: block;">
+    <div class="modal-content" id="authFormsContainer">
+      <!-- Formulario de Login (visible por defecto) -->
+      <div id="loginFormContainer">
+        <span class="close-btn" onclick="handleCloseModal()">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+          <button type="submit" class="btn">Ingresar</button>
+        </form>
+        <p class="toggle-form">¿No tienes cuenta? <a href="#" id="showRegisterLink">Regístrate aquí</a></p>
+      </div>
+
+      <!-- Formulario de Registro (oculto por defecto) -->
+      <div id="registerFormContainer" style="display: none;">
+        <span class="close-btn" onclick="handleCloseModal()">&times;</span>
+        <h2>Crear Cuenta</h2>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="newUsername">Usuario:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+          </div>
+          <div class="form-group">
+            <label for="newPassword">Contraseña:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+          </div>
+          <button type="submit" class="btn">Registrarse</button>
+        </form>
+        <p class="toggle-form">¿Ya tienes cuenta? <a href="#" id="showLoginLink">Inicia sesión aquí</a></p>
+      </div>
+    </div>
+  </div>
   <!-- Contenido principal (oculto inicialmente) -->
   <div id="mainContent" class="content-disabled">
     <header class="header">
