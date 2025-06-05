@@ -1,0 +1,17 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predicción</title>
+</head>
+<body>
+  <h1>Ingresa un número para predecir:</h1>
+  <form action="/predecir" method="POST">
+    <input type="text" name="entrada" />
+    <button type="submit">Predecir</button>
+  </form>
+  {% if resultado %}
+    <h3>Área detectada: {{ resultado }}</h3>
+  {% endif %}
+</body>
+</html>
