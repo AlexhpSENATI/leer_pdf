@@ -1,17 +1,21 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <title>Predicción</title>
+  <meta charset="UTF-8">
+  <title>Predicción de Área</title>
 </head>
 <body>
-  <h1>Ingresa un número para predecir:</h1>
-  <form action="/predecir" method="POST">
-    <input type="text" name="entrada" />
+  <h1>Sube un archivo PDF para predecir el área</h1>
+  <form action="/predict" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf_file" accept="application/pdf" required />
     <button type="submit">Predecir</button>
   </form>
-  {% if resultado %}
-    <h3>Área detectada: {{ resultado }}</h3>
+
+  {% if prediction %}
+    <h2>Resultado:</h2>
+    <p>{{ prediction.mensaje }}</p>
+    <p><strong>Área:</strong> {{ prediction.place }}</p>
+    <p><strong>Confianza:</strong> {{ prediction.percentage }}%</p>
   {% endif %}
 </body>
 </html>
