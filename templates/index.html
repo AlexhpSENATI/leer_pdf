@@ -1,21 +1,73 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Predicción de Área</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
-  <h1>Sube un archivo PDF para predecir el área</h1>
-  <form action="/predict" method="post" enctype="multipart/form-data">
-    <input type="file" name="pdf_file" accept="application/pdf" required />
-    <button type="submit">Predecir</button>
-  </form>
 
-  {% if prediction %}
-    <h2>Resultado:</h2>
-    <p>{{ prediction.mensaje }}</p>
-    <p><strong>Área:</strong> {{ prediction.place }}</p>
-    <p><strong>Confianza:</strong> {{ prediction.percentage }}%</p>
-  {% endif %}
+<body>
+  <header class="header">
+    <div class="logo-container">
+      <img src="logo.png" alt="Logo de la aplicación" class="logo">
+      <div class="navbar-hp">SistemPDF</div>
+    </div>
+    <div class="login-icon">
+      <a href="/login" aria-label="Iniciar sesión">
+        <i class="fas fa-user-circle"></i>
+      </a>
+    </div>
+  </header>
+
+
+  <div class="container">
+    <h1>Predicción de Área por PDF</h1>
+
+    <form action="/predict" method="post" enctype="multipart/form-data" id="uploadForm">
+      <div class="upload-area" id="uploadArea">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>Arrastra tu archivo PDF aquí o haz clic para seleccionar</p>
+        <input type="file" name="pdf_file" id="fileInput" class="file-input" accept="application/pdf" required />
+      </div>
+      <div class="filename" id="fileName"></div>
+      <div style="text-align: center;">
+        <button type="submit" class="btn">
+          <i class="fas fa-magic"></i> Predecir Área
+        </button>
+      </div>
+    </form>
+
+    <div class="result-container" id="resultContainer"
+      style="display: {% if prediction %}block{% else %}none{% endif %};">
+      <h2>Resultado de la Predicción</h2>
+      <div class="result-item">
+        <p id="resultMessage">{% if prediction %}{{ prediction.mensaje }}{% endif %}</p>
+      </div>
+      <div class="result-item">
+        <p><strong>Área:</strong> <span id="resultArea">{% if prediction %}{{ prediction.place }}{% endif %}</span></p>
+      </div>
+      <div class="result-item">
+        <p><strong>Confianza:</strong> <span id="resultPercentage">{% if prediction %}{{ prediction.percentage }}{%
+            endif %}</span>%</p>
+        <div class="progress-bar">
+          <div class="progress" id="confidenceBar"
+            style="width: {% if prediction %}{{ prediction.percentage }}{% else %}0{% endif %}%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="predictionData" data-exists="{{ 'true' if prediction else 'false' }}"
+    data-percentage="{{ prediction.percentage if prediction else 0 }}" style="display:none;">
+  </div>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
+
 </html>
+
+<!-- & .\.venv\Scripts\python.exe app.py -->
