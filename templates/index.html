@@ -11,58 +11,99 @@
 </head>
 
 <body>
-  <header class="header">
-    <div class="logo-container">
-      <img src="logo.png" alt="Logo de la aplicación" class="logo">
-      <div class="navbar-hp">SistemPDF</div>
-    </div>
-    <div class="login-icon">
-      <a href="/login" aria-label="Iniciar sesión">
-        <i class="fas fa-user-circle"></i>
-      </a>
-    </div>
-  </header>
-
-
-  <div class="container">
-    <h1>Predicción de Área por PDF</h1>
-
-    <form action="/predict" method="post" enctype="multipart/form-data" id="uploadForm">
-      <div class="upload-area" id="uploadArea">
-        <i class="fas fa-cloud-upload-alt"></i>
-        <p>Arrastra tu archivo PDF aquí o haz clic para seleccionar</p>
-        <input type="file" name="pdf_file" id="fileInput" class="file-input" accept="application/pdf" required />
-      </div>
-      <div class="filename" id="fileName"></div>
-      <div style="text-align: center;">
-        <button type="submit" class="btn">
-          <i class="fas fa-magic"></i> Predecir Área
-        </button>
-      </div>
-    </form>
-
-    <div class="result-container" id="resultContainer"
-      style="display: {% if prediction %}block{% else %}none{% endif %};">
-      <h2>Resultado de la Predicción</h2>
-      <div class="result-item">
-        <p id="resultMessage">{% if prediction %}{{ prediction.mensaje }}{% endif %}</p>
-      </div>
-      <div class="result-item">
-        <p><strong>Área:</strong> <span id="resultArea">{% if prediction %}{{ prediction.place }}{% endif %}</span></p>
-      </div>
-      <div class="result-item">
-        <p><strong>Confianza:</strong> <span id="resultPercentage">{% if prediction %}{{ prediction.percentage }}{%
-            endif %}</span>%</p>
-        <div class="progress-bar">
-          <div class="progress" id="confidenceBar"
-            style="width: {% if prediction %}{{ prediction.percentage }}{% else %}0{% endif %}%"></div>
+  <!-- Modal de Login -->
+  <div id="loginModal" class="modal" style="display: block;">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Iniciar Sesión</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" name="username" required>
         </div>
-      </div>
+        <div class="form-group">
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">Ingresar</button>
+      </form>
+      <p class="toggle-form">¿No tienes cuenta? <a href="#" onclick="showRegisterForm()">Regístrate aquí</a></p>
+    </div>
+
+    <div class="modal-content" id="registerForm" style="display: none;">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Crear Cuenta</h2>
+      <form id="registerForm">
+        <div class="form-group">
+          <label for="newUsername">Usuario:</label>
+          <input type="text" id="newUsername" name="newUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="newPassword">Contraseña:</label>
+          <input type="password" id="newPassword" name="newPassword" required>
+        </div>
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar Contraseña:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <button type="submit" class="btn">Registrarse</button>
+      </form>
+      <p class="toggle-form">¿Ya tienes cuenta? <a href="#" onclick="showLoginForm()">Inicia sesión aquí</a></p>
     </div>
   </div>
 
-  <div id="predictionData" data-exists="{{ 'true' if prediction else 'false' }}"
-    data-percentage="{{ prediction.percentage if prediction else 0 }}" style="display:none;">
+  <!-- Contenido principal (oculto inicialmente) -->
+  <div id="mainContent" class="content-disabled">
+    <header class="header">
+      <div class="logo-container">
+        <img src="static/logo3.png" alt="Logo de la aplicación" class="logo">
+        <div class="navbar-hp">SistemPDF</div>
+      </div>
+      <div class="login-icon">
+        <i class="fas fa-user-circle"></i>
+      </div>
+    </header>
+    <div class="container">
+      <h1>Predicción de Área por PDF</h1>
+
+      <form action="/predict" method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="upload-area" id="uploadArea">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Arrastra tu archivo PDF aquí o haz clic para seleccionar</p>
+          <input type="file" name="pdf_file" id="fileInput" class="file-input" accept="application/pdf" required />
+        </div>
+        <div class="filename" id="fileName"></div>
+        <div style="text-align: center;">
+          <button type="submit" class="btn">
+            <i class="fas fa-magic"></i> Predecir Área
+          </button>
+        </div>
+      </form>
+
+      <div class="result-container" id="resultContainer"
+        style="display: {% if prediction %}block{% else %}none{% endif %};">
+        <h2>Resultado de la Predicción</h2>
+        <div class="result-item">
+          <p id="resultMessage">{% if prediction %}{{ prediction.mensaje }}{% endif %}</p>
+        </div>
+        <div class="result-item">
+          <p><strong>Área:</strong> <span id="resultArea">{% if prediction %}{{ prediction.place }}{% endif %}</span>
+          </p>
+        </div>
+        <div class="result-item">
+          <p><strong>Confianza:</strong> <span id="resultPercentage">{% if prediction %}{{ prediction.percentage }}{%
+              endif %}</span>%</p>
+          <div class="progress-bar">
+            <div class="progress" id="confidenceBar"
+              style="width: {% if prediction %}{{ prediction.percentage }}{% else %}0{% endif %}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="predictionData" data-exists="{{ 'true' if prediction else 'false' }}"
+      data-percentage="{{ prediction.percentage if prediction else 0 }}" style="display:none;">
+    </div>
   </div>
 
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
