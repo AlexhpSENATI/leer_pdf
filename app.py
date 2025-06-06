@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import fitz  # PyMuPDF
+import fitz  
 import joblib
 import numpy as np
 import os
@@ -8,7 +8,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.secret_key = 'tu_clave_secreta_aqui'  # Necesario para usar sesiones
+app.secret_key = 'tu_clave_secreta_aqui'  
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -69,7 +69,6 @@ def predict():
             area_predicha = etiquetas[indice_max]
             porcentaje = round(confianza * 100, 2)
         except Exception as e:
-            # Si hay error, eliminamos el PDF subido
             os.remove(ruta_pdf)
             return f"Error en la predicción: {e}", 500
 
@@ -91,7 +90,6 @@ def predict():
 
 @app.route('/get-pdfs', methods=['GET'])
 def get_pdfs():
-    # En una aplicación real, aquí filtrarías por usuario logueado
     pdfs = []
     upload_folder = app.config['UPLOAD_FOLDER']
     

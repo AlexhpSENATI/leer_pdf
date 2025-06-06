@@ -10,31 +10,25 @@ nltk.download('stopwords', quiet=True)
 
 spanish_stopwords = stopwords.words('spanish')
 
-# 📥 Cargar dataset
 try:
     df = pd.read_csv("data/dataset.csv")
 except FileNotFoundError:
     print("❌ Error: El archivo 'dataset.csv' no fue encontrado.")
     exit()
 
-# 🧹 Eliminar filas con campos vacíos
 df.dropna(subset=["texto", "area"], inplace=True)
 
-# 🚨 Verificar si el dataset tiene suficientes datos
 if df.empty or df["area"].nunique() < 2:
     print("⚠️ El dataset es muy pequeño o no tiene suficientes clases. Agrega más datos.")
     exit()
 
-# ⚙️ Crear pipeline de procesamiento y modelo
 modelo = Pipeline([
     ("vectorizer", TfidfVectorizer(stop_words=spanish_stopwords)),
     ("clf", MultinomialNB())
 ])
 
-# 🎓 Entrenar modelo
 modelo.fit(df["texto"], df["area"])
 
-# 💾 Guardar modelo entrenado
 joblib.dump(modelo, "modelo_entrenado.pkl")
 
 print("✅ Modelo entrenado y guardado correctamente.")

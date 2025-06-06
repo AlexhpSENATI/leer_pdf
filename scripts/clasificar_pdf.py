@@ -11,7 +11,7 @@ def extraer_texto_pdf(ruta_pdf):
         texto += pagina.get_text()
     return texto
 
-ruta_pdf = "data/areaMAA.pdf"
+ruta_pdf = "data/Currículum Vitae.pdf"
 
 texto_extraido = extraer_texto_pdf(ruta_pdf)
 
