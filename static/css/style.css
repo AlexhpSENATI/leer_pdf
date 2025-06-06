@@ -359,7 +359,7 @@ h1 {
 /* Estilos para la sidebar */
 .sidebar {
     width: 300px;
-    background: var(--primary-dark);;
+    background: var(--primary);
     color: white;
     padding: 20px;
     position: fixed;
