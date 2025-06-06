@@ -56,6 +56,7 @@ if (predictionData) {
 }
 
 
+
 // ========== VARIABLES GLOBALES ========== //
 const loginModal = document.getElementById('loginModal');
 const mainContent = document.getElementById('mainContent');
@@ -67,12 +68,18 @@ const showRegisterLink = document.getElementById('showRegisterLink');
 const showLoginLink = document.getElementById('showLoginLink');
 const logoutBtn = document.querySelector('.login-icon');
 const closeBtns = document.querySelectorAll('.close-btn');
+const sidebar = document.getElementById('pdfSidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const closeSidebar = document.getElementById('closeSidebar');
+const pdfList = document.getElementById('pdfList');
+const uploadForm = document.getElementById('uploadForm');
 
 // ========== INICIALIZACIÓN ========== //
 document.addEventListener('DOMContentLoaded', function() {
     checkAuth();
     setupAuthForms();
     setupEventListeners();
+    setupSidebar();
 });
 
 // ========== FUNCIONES DE AUTENTICACIÓN ========== //
@@ -98,18 +105,29 @@ function enableMainContent(username) {
     mainContent.classList.remove('content-disabled');
     mainContent.classList.add('content-enabled');
     
+    // Habilitar sidebar
+    sidebar.classList.add('authenticated');
+    sidebarToggle.classList.add('authenticated');
+    
     // Actualizar UI
     const loginIcon = document.querySelector('.login-icon i');
     loginIcon.className = 'fas fa-sign-out-alt';
     loginIcon.parentElement.setAttribute('title', 'Cerrar sesión');
     logoutBtn.onclick = logout;
+    
+    // Cargar PDFs si la sidebar está visible
+    if (sidebar.classList.contains('active')) {
+        loadPDFs();
+    }
 }
 
 function disableMainContent() {
     mainContent.classList.add('content-disabled');
     mainContent.classList.remove('content-enabled');
     
-    // Actualizar UI
+    sidebar.classList.remove('authenticated', 'active');
+    sidebarToggle.classList.remove('authenticated');
+    
     const loginIcon = document.querySelector('.login-icon i');
     loginIcon.className = 'fas fa-user-circle';
     loginIcon.parentElement.setAttribute('title', 'Iniciar sesión');
@@ -118,13 +136,13 @@ function disableMainContent() {
 
 // ========== MANEJO DE FORMULARIOS ========== //
 function setupAuthForms() {
-    // Mostrar formulario de registro
+
     showRegisterLink.addEventListener('click', function(e) {
         e.preventDefault();
         showRegisterForm();
     });
 
-    // Mostrar formulario de login
+
     showLoginLink.addEventListener('click', function(e) {
         e.preventDefault();
         showLoginForm();
@@ -192,6 +210,11 @@ function registerUser(username, password) {
 function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('loggedInUser');
+    
+    // Deshabilitar sidebar
+    sidebar.classList.remove('authenticated', 'active');
+    sidebarToggle.classList.remove('authenticated');
+    
     showAuthModal();
     loginForm.reset();
     registerForm.reset();
@@ -253,25 +276,116 @@ function handleRegisterSubmit(e) {
         });
 }
 
+// ========== SIDEBAR Y PDFs ========== //
+function setupSidebar() {
+    // Toggle sidebar solo si está autenticado
+    sidebarToggle.addEventListener('click', function() {
+        if (localStorage.getItem('loggedInUser')) {
+            sidebar.classList.toggle('active');
+            if (sidebar.classList.contains('active')) {
+                loadPDFs();
+            }
+        } else {
+            showAuthModal();
+        }
+    });
+
+    closeSidebar.addEventListener('click', function() {
+        sidebar.classList.remove('active');
+    });
+
+    // Actualizar la lista después de subir un PDF
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', function() {
+            setTimeout(loadPDFs, 1000);
+        });
+    }
+}
+
+function loadPDFs() {
+    // Verificar autenticación primero
+    if (!localStorage.getItem('loggedInUser')) {
+        return;
+    }
+
+    fetch('/get-pdfs')
+        .then(response => response.json())
+        .then(data => {
+            pdfList.innerHTML = '';
+
+            if (data.length === 0) {
+                pdfList.innerHTML = '<div class="no-pdfs">No hay documentos subidos aún.</div>';
+                return;
+            }
+
+            data.forEach(pdf => {
+                const item = document.createElement('li');
+                item.className = 'pdf-item';
+                item.innerHTML = `
+                    <i class="fas fa-file-pdf pdf-icon"></i>
+                    <div class="pdf-info">
+                        <div class="pdf-name">${pdf.name}</div>
+                        <div class="pdf-meta">${pdf.date} • ${pdf.size}</div>
+                    </div>
+                    <div class="pdf-actions">
+                        <a href="${pdf.url}" target="_blank" title="Ver"><i class="fas fa-eye"></i></a>
+                        <a href="${pdf.url}" download title="Descargar"><i class="fas fa-download"></i></a>
+                        <a href="#" class="delete-pdf" data-filename="${pdf.url.split('/').pop()}" title="Eliminar"><i class="fas fa-trash"></i></a>
+                    </div>
+                `;
+                pdfList.appendChild(item);
+            });
+
+            document.querySelectorAll('.delete-pdf').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const filename = this.getAttribute('data-filename');
+                    if (confirm('¿Estás seguro de querer eliminar este archivo?')) {
+                        deletePDF(filename);
+                    }
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error al cargar PDFs:', error);
+            pdfList.innerHTML = '<div class="no-pdfs">Error al cargar los documentos</div>';
+        });
+}
+
+function deletePDF(filename) {
+    fetch(`/delete-pdf/${filename}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadPDFs(); // Recargar la lista
+            } else {
+                alert('Error al eliminar el archivo: ' + (data.error || ''));
+            }
+        })
+        .catch(error => {
+            alert('Error al eliminar el archivo');
+            console.error('Error:', error);
+        });
+}
+
 // ========== CONFIGURACIÓN DE EVENTOS ========== //
 function setupEventListeners() {
     // Formularios
     loginForm.addEventListener('submit', handleLoginSubmit);
     registerForm.addEventListener('submit', handleRegisterSubmit);
     
-    // Botones de cerrar
     closeBtns.forEach(btn => {
         btn.addEventListener('click', handleCloseModal);
     });
     
-    // Clic fuera del modal
     loginModal.addEventListener('click', (e) => {
         if (e.target === loginModal) {
             handleCloseModal();
         }
     });
     
-    // Tecla Escape
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && loginModal.style.display === 'flex') {
             handleCloseModal();
